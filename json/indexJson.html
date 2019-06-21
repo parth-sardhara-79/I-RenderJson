@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://cdn.rawgit.com/caldwell/renderjson/master/renderjson.js"></script>
+  <!-- <script src="renderjson.js"></script> -->
+<style>
+#container {
+	text-shadow: none;
+	background: white;
+	padding: 1em;
+}
+
+.renderjson a {
+	text-decoration: none;
+}
+
+.renderjson .disclosure {
+	color: crimson;
+	font-size: 150%;
+}
+
+.renderjson .syntax {
+	color:black;
+}
+
+.renderjson .string {
+	color: black;
+}
+
+.renderjson .number {
+	color: black;
+}
+
+.renderjson .boolean {
+	color: black;
+}
+
+.renderjson .key {
+	color: black;
+}
+
+.renderjson .keyword {
+	color: lightgoldenrodyellow;
+}
+
+.renderjson .object.syntax {
+	color: lightseagreen;
+}
+
+.renderjson .array.syntax {
+	color: lightsalmon;
+}
+</style>
+<body>
+  
+  <div id="container"></div>
+
+  <script>
+      var someObject = {
+        'part1' : {
+            'name': 'Part 1',
+            'size': '20',
+            'qty' : '50'
+        },
+        'part2' : {
+            'name': 'Part 2',
+            'size': '15',
+            'qty' : '60'
+        },
+        'part3' : [
+            {
+                'name': 'Part 3A',
+                'size': '10',
+                'qty' : '20'
+            }, {
+                'name': 'Part 3B',
+                'size': '5',
+                'qty' : '20'
+            }, {
+                'name': 'Part 3C',
+                'size': '7.5',
+                'qty' : '20'
+            }
+        ]
+    };
+      Object.byString = function(o, s) {
+          s = s.replace(/\[(\w+)\]/g, '.$1');
+          s = s.replace(/^\./, '');
+          var a = s.split('.');
+          for (var i = 0, n = a.length; i < n; ++i) {
+              var k = a[i];
+              if (k in o) {
+                  o = o[k];
+              } else {
+                  return;
+              }
+          }
+          return o;
+      }
+      console.log("data", Object.byString(someObject, 'part3[1].name'));
+
+      var data = { 
+          hello: [1,2,3,4], 
+          there: { 
+              a:1, 
+              b:2, 
+              c:["hello", null]
+          } 
+      };
+      renderjson.set_show_to_level(10);
+      document.getElementById("container").appendChild(
+          renderjson(data)
+      );
+  </script>
+</body>
+</html>

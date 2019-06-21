@@ -1,0 +1,60 @@
+In order to use AngularFire in your project, you need to include the following files in your index.html:-
+
+  <!-- angularjs library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <!-- firebase library -->
+  <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+  <!-- firebase library for angular js -->
+  <script src="https://cdn.firebase.com/libs/angularfire/1.1.2/angularfire.min.js"></script>
+
+
+Injected firebase into firebaseService.js:-
+      I.E.:- var app = angular.module('firebaseModule', ['firebase']);
+
+Then created a firebase reference to connect with firebase DB which generate the reference URL:-
+  =>  Used the reference URL at getFirebaseObj method into firebaseService.js like:-
+      I.E.:- var firebaseObj = new Firebase("https://practical-app-dbdf2.firebaseio.com/practical");
+
+  =>  $firebaseArray service takes a firebase reference and returns array which contains data provided by firebase reference
+      I.E.:- return this.fb = $firebaseArray(firebaseObj);
+
+Now, we have a form.html and form.js and we want to Get,Add,Delete the data from form.html to firebase. 
+  =>  getFirebaseObj function in firebaseService returns firebase reference in form.js 
+      I.E.:- var fb = firebaseService.getFirebaseObj();
+
+Add,Get,Delete
+=>we have a form.js
+  $scope.addEmployee = function() {
+    var employee = $scope.emp; 
+    var empData = {
+        'name' : employee.name,
+        'age' : employee.age,
+        'password' : employee.password,
+        'email' : employee.email,
+        'message' : employee.message
+    };
+
+  =>  For Add the data to the Firebase.
+  =>  $add method of $firebaseArray service takes array/object as a parameter and returns a promise which is resolved when data has been saved 	     into firebase DB 
+      I.E.:-  fb.$add(empData).then(function(ref) {
+                $scope.emp = {};
+                alert("Employee data successfully saved.");
+              });
+
+  =>  For Getting the data from the Firebase.
+  =>  $loaded method return a promise which is resolved when the data has been downloaded from the firebase DB
+      I.E.:-  fb.$loaded().then(function(x) {
+                  $scope.employeeData = x;
+                if ($scope.employeeData.length !== 0) {
+                      $scope.showEmpData = true;
+                  }
+              });
+
+  =>  For Delete the data from the Firebase.
+  =>  $remove method return a promise which is resolved when the data has been deleted from the DB
+      I.E.:-  $scope.removeData = function(user) {
+                fb.$remove(user).then(function(ref) {
+                    if (ref.key() === user.$id) {
+                        alert("record successfully deleted.");
+                    } 
+                });

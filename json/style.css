@@ -1,0 +1,20 @@
+section {
+  position: absolute;
+}
+json-tree ul {
+  margin: 0;
+  background: rgba(255,255,255,0.1);
+}
+json-tree .key {
+  color: #CB4E7F;
+}
+json-tree .value {
+  color: red;
+}
+
+json-tree .branch-preview {
+  max-width: 60%;
+}
+json-tree .branch-preview::after {
+  content: '...';
+}
